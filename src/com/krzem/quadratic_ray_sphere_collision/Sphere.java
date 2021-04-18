@@ -115,7 +115,7 @@ public class Sphere extends Constants{
 
 
 	private void _gen(GL2 gl){
-		double SPHERE_SUBDIVISIONS=5;
+		int SPHERE_SUBDIVISIONS=5;
 		Sphere cls=this;
 		List<Double> va=new ArrayList<Double>(){{
 			double c=(1+Math.sqrt(5))/2;
@@ -226,18 +226,6 @@ public class Sphere extends Constants{
 			ia.clear();
 			ia.addAll(nia);
 		}
-		// List<Short> used=new ArrayList<Short>();
-		// for (int i=0;i<ia.size();i++){
-		// 	if (used.contains(ia.get(i))==false){
-		// 		used.add(ia.get(i));
-		// 	}
-		// 	else{
-		// 		va.add(va.get(ia.get(i)*3));
-		// 		va.add(va.get(ia.get(i)*3+1));
-		// 		va.add(va.get(ia.get(i)*3+2));
-		// 		ia.set(i,(short)(va.size()/3-1));
-		// 	}
-		// }
 		double[] vl=new double[va.size()];
 		int i=0;
 		for (Double e:va){
@@ -255,49 +243,24 @@ public class Sphere extends Constants{
 			tl[i]=0.5+Math.atan2(vl[i/2*3+2]/this.r,vl[i/2*3]/this.r)/(Math.PI*2);
 			tl[i+1]=0.5-Math.asin(vl[i/2*3+1]/this.r)/Math.PI;
 		}
-		// double[] vl=new double[(SPHERE_DETAIL+1)*(SPHERE_DETAIL+1)*3];
-		// short[] il=new short[(SPHERE_DETAIL+1)*SPHERE_DETAIL*2*3];
-		// double[] tl=new double[(SPHERE_DETAIL+1)*(SPHERE_DETAIL+1)*2];
-		// int vli=0;
-		// int ili=0;
-		// int tli=0;
-		// for (int i=0;i<=SPHERE_DETAIL;i++){
-		// 	for (int j=0;j<=SPHERE_DETAIL;j++){
-		// 		double a=i*Math.PI/SPHERE_DETAIL;
-		// 		double b=j*Math.PI*2/SPHERE_DETAIL;
-		// 		vl[vli++]=this.x+this.r*Math.sin(a)*Math.cos(b);
-		// 		vl[vli++]=this.y+this.r*Math.cos(a);
-		// 		vl[vli++]=this.z+this.r*Math.sin(a)*Math.sin(b);
-		// 		tl[tli++]=(double)j/(SPHERE_DETAIL+1);
-		// 		tl[tli++]=(double)i/(SPHERE_DETAIL+1);
-		// 		if (j<SPHERE_DETAIL){
-		// 			il[ili++]=(short)(i*SPHERE_DETAIL+j);
-		// 			il[ili++]=(short)(i*SPHERE_DETAIL+j+1);
-		// 			il[ili++]=(short)((i+1)*SPHERE_DETAIL+j+1);
-		// 			il[ili++]=(short)(i*SPHERE_DETAIL+j);
-		// 			il[ili++]=(short)((i+1)*SPHERE_DETAIL+j);
-		// 			il[ili++]=(short)((i+1)*SPHERE_DETAIL+j+1);
-		// 		}
-		// 	}
-		// }
 		if (this._vb==null){
 			this._vb=DoubleBuffer.wrap(vl);
 		}
-		else if (vl!=null){
+		else{
 			this._vb.put(vl);
 			this._vb.flip();
 		}
 		if (this._ib==null){
 			this._ib=ShortBuffer.wrap(il);
 		}
-		else if (il!=null){
+		else{
 			this._ib.put(il);
 			this._ib.flip();
 		}
 		if (this._tb==null){
 			this._tb=DoubleBuffer.wrap(tl);
 		}
-		else if (tl!=null){
+		else{
 			this._tb.put(tl);
 			this._tb.flip();
 		}
@@ -306,13 +269,13 @@ public class Sphere extends Constants{
 			gl.glGenBuffers(3,tmp,0);
 			this._v_id=tmp[0];
 			gl.glBindBuffer(GL2.GL_ARRAY_BUFFER,this._v_id);
-			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._vb.capacity()*8,this._vb,GL2.GL_STATIC_DRAW);
+			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._vb.capacity()*((long)8),this._vb,GL2.GL_STATIC_DRAW);
 			this._i_id=tmp[1];
 			gl.glBindBuffer(GL2.GL_ARRAY_BUFFER,this._i_id);
-			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._ib.capacity()*2,this._ib,GL2.GL_STATIC_DRAW);
+			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._ib.capacity()*((long)2),this._ib,GL2.GL_STATIC_DRAW);
 			this._t_id=tmp[2];
 			gl.glBindBuffer(GL2.GL_ARRAY_BUFFER,this._t_id);
-			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._tb.capacity()*8,this._tb,GL2.GL_STATIC_DRAW);
+			gl.glBufferData(GL2.GL_ARRAY_BUFFER,this._tb.capacity()*((long)8),this._tb,GL2.GL_STATIC_DRAW);
 		}
 	}
 
